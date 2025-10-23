@@ -4,6 +4,20 @@ const nextConfig = {
     // Enable middleware
     middleware: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.aceternity.com',
+        pathname: '/**',
+      },
+    ],
+  },
   // Enable geoip functionality
   env: {
     MONGODB_URI: process.env.MONGODB_URI,

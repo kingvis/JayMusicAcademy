@@ -1,7 +1,8 @@
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import Navbar from '../components/Navbar';
-import ParticleBackground from '../components/ParticleBackground';
+import dynamic from 'next/dynamic';
+const ParticleBackground = dynamic(() => import('../components/ParticleBackground'), { ssr: false });
 import '../styles/globals.css';
 import { ThemeProvider } from '../components/theme-provider';
 
