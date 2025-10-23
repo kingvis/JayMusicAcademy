@@ -8,7 +8,6 @@ import Link from "next/link";
 import ThemeToggle from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/router";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -95,13 +94,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div className="font-semibold">JayMusic Academy</div>
           <div className="md:hidden"><ThemeToggle /></div>
         </header>
-        <main className="p-0 md:p-0">
-          {isHome ? (
-            <AuroraBackground className="dark:bg-neutral-900">{children}</AuroraBackground>
-          ) : (
-            <div className="p-4 md:p-8">{children}</div>
-          )}
-        </main>
+        <main className={cn(isHome ? "p-0" : "p-4 md:p-8")}>{children}</main>
       </div>
     </div>
   );

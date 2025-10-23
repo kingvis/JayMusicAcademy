@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { AuroraBackground } from '@/components/ui/aurora-background';
 
 const Home: React.FC = () => {
   const { data: session, status } = useSession();
@@ -34,8 +35,9 @@ const Home: React.FC = () => {
 
   return (
     <div className="relative">
-      {/* Hero Section */}
-      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+      {/* Hero Section with Aurora */}
+      <AuroraBackground className="dark:bg-neutral-900">
+        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -48,7 +50,7 @@ const Home: React.FC = () => {
               Discover your musical journey with world-class instructors and personalized learning experiences
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link href="/auth/signup">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -70,9 +72,10 @@ const Home: React.FC = () => {
             </div>
           </motion.div>
         </div>
+      </AuroraBackground>
 
       {/* Stats Section */}
-      <section className="py-20 bg-black/20 backdrop-blur-sm">
+      <section className="py-20 bg-black/40 dark:bg-black/20 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -95,7 +98,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Instruments Section */}
-      <section id="instruments" className="py-20">
+      <section id="instruments" className="py-20 bg-transparent">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
