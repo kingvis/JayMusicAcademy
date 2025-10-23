@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { AuroraBackground } from '@/components/ui/aurora-background';
 
 const Home: React.FC = () => {
   const { data: session, status } = useSession();
@@ -35,9 +34,8 @@ const Home: React.FC = () => {
 
   return (
     <div className="relative">
-      {/* Hero Section with Aurora Background */}
-      <AuroraBackground>
-        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+      {/* Hero Section */}
+      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -72,7 +70,6 @@ const Home: React.FC = () => {
             </div>
           </motion.div>
         </div>
-      </AuroraBackground>
 
       {/* Stats Section */}
       <section className="py-20 bg-black/20 backdrop-blur-sm">
