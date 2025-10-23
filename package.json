@@ -1,0 +1,50 @@
+{
+  "name": "jaymusicacademy-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for JayMusicAcademy",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "type": "module",
+  "dependencies": {
+    "@next-auth/mongodb-adapter": "^1.1.0",
+    "@reduxjs/toolkit": "^1.9.0",
+    "autoprefixer": "^10.4.0",
+    "axios": "^1.6.2",
+    "bcryptjs": "^2.4.3",
+    "clsx": "^2.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "framer-motion": "^10.16.0",
+    "geoip-lite": "^1.4.7",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.292.0",
+    "mongodb": "^5.7.0",
+    "next": "^14.0.0",
+    "next-auth": "^4.24.0",
+    "next-themes": "^0.4.6",
+    "postcss": "^8.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.1.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^3.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "typescript": "5.9.3"
+  },
+  "keywords": [
+    "music",
+    "academy",
+    "mongodb",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC"
+}
