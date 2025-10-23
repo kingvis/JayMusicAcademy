@@ -1,10 +1,10 @@
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
-import Navbar from '../components/Navbar';
 import dynamic from 'next/dynamic';
 const ParticleBackground = dynamic(() => import('../components/ParticleBackground'), { ssr: false });
 import '../styles/globals.css';
 import { ThemeProvider } from '../components/theme-provider';
+import AppShell from '../components/ui/app-shell';
 
 export default function App({ 
   Component, 
@@ -15,10 +15,9 @@ export default function App({
       <ThemeProvider>
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-zinc-100 dark:from-slate-900 dark:via-purple-900 dark:to-slate-900">
           <ParticleBackground />
-          <Navbar />
-          <main className="pt-16">
+          <AppShell>
             <Component {...pageProps} />
-          </main>
+          </AppShell>
         </div>
       </ThemeProvider>
     </SessionProvider>

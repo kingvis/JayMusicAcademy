@@ -19,6 +19,7 @@ import {
   Calendar,
   Heart,
 } from 'lucide-react';
+import ThemeToggle from './ui/theme-toggle';
 
 const Navbar: React.FC = () => {
   const { data: session, status } = useSession();
@@ -64,8 +65,8 @@ const Navbar: React.FC = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? 'glass backdrop-blur-md shadow-lg' 
+        scrolled
+          ? 'backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-neutral-900/60 border-b border-black/10 dark:border-white/10'
           : 'bg-transparent'
       }`}
     >
@@ -101,6 +102,7 @@ const Navbar: React.FC = () => {
 
           {/* Contact & Auth */}
           <div className="hidden md:flex items-center space-x-4">
+            <ThemeToggle />
             {/* Contact Info */}
             <div className="flex items-center space-x-3">
               {contactInfo.map((contact, index) => (
@@ -217,6 +219,7 @@ const Navbar: React.FC = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-3">
+                <ThemeToggle />
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
