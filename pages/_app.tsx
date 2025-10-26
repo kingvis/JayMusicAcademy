@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import { SessionProvider } from 'next-auth/react';
+import { ClerkProvider } from '@clerk/nextjs';
 import dynamic from 'next/dynamic';
 const ParticleBackground = dynamic(() => import('../components/ParticleBackground'), { ssr: false });
 import '../styles/globals.css';
@@ -8,10 +8,10 @@ import AppShell from '../components/ui/app-shell';
 
 export default function App({ 
   Component, 
-  pageProps: { session, ...pageProps } 
+  pageProps 
 }: AppProps) {
   return (
-    <SessionProvider session={session}>
+    <ClerkProvider>
       <ThemeProvider>
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-zinc-100 dark:from-slate-900 dark:via-purple-900 dark:to-slate-900">
           <ParticleBackground />
@@ -20,6 +20,6 @@ export default function App({
           </AppShell>
         </div>
       </ThemeProvider>
-    </SessionProvider>
+    </ClerkProvider>
   );
 }

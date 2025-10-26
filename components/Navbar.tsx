@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from '@clerk/nextjs';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Music,
@@ -22,7 +22,6 @@ import {
 import ThemeToggle from './ui/theme-toggle';
 
 const Navbar: React.FC = () => {
-  const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -118,12 +117,9 @@ const Navbar: React.FC = () => {
               ))}
             </div>
 
-            {/* Authentication */}
-            {status === 'loading' ? (
-              <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            ) : session ? (
+            {/* Authentication (Clerk) */}
+            <SignedIn>
               <div className="flex items-center space-x-3">
-                {/* Notifications */}
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -136,91 +132,13 @@ const Navbar: React.FC = () => {
                     </span>
                   )}
                 </motion.button>
-
-                {/* User Menu */}
-                <div className="relative">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                  >
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-semibold">
-                        {session.user?.name?.charAt(0) || 'U'}
-                      </span>
-                    </div>
-                    <div className="text-left">
-                      <div className="text-sm font-medium text-gray-700">
-                        {session.user?.name || 'User'}
-                      </div>
-                      <div className="text-xs text-gray-500">Student</div>
-                    </div>
-                  </motion.button>
-
-                  {/* User Dropdown Menu */}
-                  <AnimatePresence>
-                    {showUserMenu && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
-                      >
-                        <div className="px-4 py-3 border-b border-gray-100">
-                          <div className="flex items-center space-x-3">
-                            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                              <span className="text-white font-semibold">
-                                {session.user?.name?.charAt(0) || 'U'}
-                              </span>
-                            </div>
-                            <div>
-                              <div className="font-medium text-gray-900">
-                                {session.user?.name || 'User'}
-                              </div>
-                              <div className="text-sm text-gray-500">
-                                {session.user?.email}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="py-2">
-                          {userMenuItems.map((item, index) => (
-                            <Link key={item.name} href={item.href}>
-                              <motion.div
-                                whileHover={{ backgroundColor: '#f3f4f6' }}
-                                className="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
-                              >
-                                <item.icon className="w-4 h-4" />
-                                <span className="text-sm">{item.name}</span>
-                              </motion.div>
-                            </Link>
-                          ))}
-                        </div>
-                        
-                        <div className="border-t border-gray-100 py-2">
-                          <motion.button
-                            whileHover={{ backgroundColor: '#fef2f2' }}
-                            onClick={() => {
-                              signOut();
-                              setShowUserMenu(false);
-                            }}
-                            className="flex items-center space-x-3 px-4 py-2 text-red-600 hover:bg-red-50 transition-colors w-full text-left"
-                          >
-                            <LogOut className="w-4 h-4" />
-                            <span className="text-sm">Sign Out</span>
-                          </motion.button>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                <UserButton afterSignOutUrl="/" />
               </div>
-            ) : (
+            </SignedIn>
+            <SignedOut>
               <div className="flex items-center space-x-3">
                 <ThemeToggle />
-                <Link href="/auth">
+                <SignInButton mode="modal">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -228,8 +146,8 @@ const Navbar: React.FC = () => {
                   >
                     Sign In
                   </motion.button>
-                </Link>
-                <Link href="/auth/signup">
+                </SignInButton>
+                <SignUpButton mode="modal">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -237,9 +155,9 @@ const Navbar: React.FC = () => {
                   >
                     Create Account
                   </motion.button>
-                </Link>
+                </SignUpButton>
               </div>
-            )}
+            </SignedOut>
           </div>
 
           {/* Mobile menu button */}
@@ -299,29 +217,20 @@ const Navbar: React.FC = () => {
                 ))}
               </div>
 
-              {/* Mobile Auth */}
+              {/* Mobile Auth (Clerk) */}
               <div className="pt-4 border-t border-gray-200">
-                {session ? (
-                  <div className="space-y-3">
+                <SignedIn>
+                  <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2 text-gray-700">
                       <User className="w-5 h-5" />
-                      <span className="font-medium">{session.user?.name}</span>
+                      <span className="font-medium">Account</span>
                     </div>
-                    <motion.button
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => {
-                        signOut();
-                        setIsOpen(false);
-                      }}
-                      className="w-full flex items-center justify-center space-x-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      <span>Sign Out</span>
-                    </motion.button>
+                    <UserButton afterSignOutUrl="/" />
                   </div>
-                ) : (
+                </SignedIn>
+                <SignedOut>
                   <div className="space-y-3">
-                    <Link href="/auth">
+                    <SignInButton mode="modal">
                       <motion.button
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setIsOpen(false)}
@@ -329,8 +238,8 @@ const Navbar: React.FC = () => {
                       >
                         Sign In
                       </motion.button>
-                    </Link>
-                    <Link href="/auth/signup">
+                    </SignInButton>
+                    <SignUpButton mode="modal">
                       <motion.button
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setIsOpen(false)}
@@ -338,9 +247,9 @@ const Navbar: React.FC = () => {
                       >
                         Create Account
                       </motion.button>
-                    </Link>
+                    </SignUpButton>
                   </div>
-                )}
+                </SignedOut>
               </div>
             </div>
           </motion.div>

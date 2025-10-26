@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    // Enable middleware
-    middleware: true,
   },
   images: {
     remotePatterns: [

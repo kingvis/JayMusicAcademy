@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { useUser } from '@clerk/nextjs';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { AuroraBackground } from '@/components/ui/aurora-background';
@@ -8,7 +8,7 @@ import { InfiniteSlider } from '@/components/ui/infinite-slider';
 import { Keyboard, Mic, Drumstick, Music, Zap, Wind, Volume2, Users, Star, Clock, Shield, Award, Heart, Headphones, BookOpen, Trophy, Target, Sparkles } from 'lucide-react';
 
 const Home: React.FC = () => {
-  const { data: session, status } = useSession();
+  const { isSignedIn } = useUser();
   const [showFormModal, setShowFormModal] = React.useState(false);
   const [completedForm, setCompletedForm] = React.useState(false);
 
@@ -92,10 +92,10 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     // Show form modal for new users who haven't completed the form
-    if (session && !completedForm && status === 'authenticated') {
+    if (isSignedIn && !completedForm) {
       setShowFormModal(true);
     }
-  }, [session, completedForm, status]);
+  }, [isSignedIn, completedForm]);
 
   return (
     <div className="relative">

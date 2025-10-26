@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Piano as PianoIcon, Star, Clock, Users, Award, Play, Download, BookOpen, Heart, Share2, Volume2, Pause } from 'lucide-react';
+import { Keyboard as PianoIcon, Star, Clock, Users, Award, Play, Download, BookOpen, Heart, Share2, Volume2, Pause } from 'lucide-react';
 
 const Piano: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);

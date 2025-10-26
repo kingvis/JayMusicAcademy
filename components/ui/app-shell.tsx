@@ -20,14 +20,15 @@ import Link from "next/link";
 import ThemeToggle from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/router";
-import { signOut } from "next-auth/react";
 import Footer from "@/components/ui/footer";
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useClerk } from "@clerk/nextjs";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const isHome = router.pathname === "/";
   const isDashboard = router.pathname.startsWith("/dashboard");
+  const { signOut } = useClerk();
 
   const links = [
     {
@@ -116,19 +117,35 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               {links.map((link) => (
                 <SidebarLink key={link.label} link={link} />
               ))}
-              <SidebarLink
-                onClick={(e) => {
-                  e.preventDefault();
-                  signOut();
-                }}
-                link={{
-                  label: "Logout",
-                  href: "#",
-                  icon: (
-                    <LogOut className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-                  ),
-                }}
-              />
+              <SignedIn>
+                <SidebarLink
+                  onClick={(e) => {
+                    e.preventDefault();
+                    signOut();
+                  }}
+                  link={{
+                    label: "Logout",
+                    href: "#",
+                    icon: (
+                      <LogOut className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                    ),
+                  }}
+                />
+              </SignedIn>
+              <SignedOut>
+                <div className="flex flex-col gap-1.5">
+                  <SignInButton mode="modal">
+                    <SidebarLink link={{ label: "Sign In", href: "#", icon: (
+                      <LogIn className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                    ) }} />
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <SidebarLink link={{ label: "Sign Up", href: "#", icon: (
+                      <UserPlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                    ) }} />
+                  </SignUpButton>
+                </div>
+              </SignedOut>
             </div>
           </div>
 
