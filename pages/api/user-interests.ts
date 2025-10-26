@@ -23,16 +23,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!user_id || !interests) return res.status(400).json({ error: 'Missing required fields' });
 
   try {
-    const { error } = await supabase.from('user_interests').insert({
-      user_id,
-      name,
-      email,
-      interests,
-    });
+    // Use upsert to handle cases where user already has interests saved
+    const { error } = await supabase.from('user_interests').upsert(
+      {
+        user_id,
+        name,
+        email,
+        interests,
+        updated_at: new Date().toISOString(),
+      },
+      {
+        onConflict: 'user_id',
+      }
+    );
     if (error) {
       // Log full details server-side for debugging
       // eslint-disable-next-line no-console
-      console.error('Supabase insert error', { message: error.message, details: (error as any).details, hint: (error as any).hint, code: (error as any).code });
+      console.error('Supabase upsert error', { message: error.message, details: (error as any).details, hint: (error as any).hint, code: (error as any).code });
       return res.status(400).json({ error: error.message, details: (error as any).details, hint: (error as any).hint, code: (error as any).code });
     }
 
