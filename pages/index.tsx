@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useUser } from '@clerk/nextjs';
+import { useUser, SignedIn, SignedOut, SignInButton } from '@clerk/nextjs';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { AuroraBackground } from '@/components/ui/aurora-background';
 import { GlareCard } from '@/components/ui/glare-card';
 import { InfiniteSlider } from '@/components/ui/infinite-slider';
+import PersonalizationFormModal from '@/components/PersonalizationFormModal';
 import { Keyboard, Mic, Drumstick, Music, Zap, Wind, Volume2, Users, Star, Clock, Shield, Award, Heart, Headphones, BookOpen, Trophy, Target, Sparkles } from 'lucide-react';
 
 const Home: React.FC = () => {
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
   const [showFormModal, setShowFormModal] = React.useState(false);
   const [completedForm, setCompletedForm] = React.useState(false);
 
@@ -115,15 +116,27 @@ const Home: React.FC = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link href="/auth/signup">
+<SignedIn>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => setShowFormModal(true)}
                   className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-lg font-semibold hover:shadow-2xl transition-all duration-300 glow"
                 >
                   Start Learning Today
                 </motion.button>
-              </Link>
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-lg font-semibold hover:shadow-2xl transition-all duration-300 glow"
+                  >
+                    Start Learning Today
+                  </motion.button>
+                </SignInButton>
+              </SignedOut>
               <Link href="#instruments">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -260,37 +273,40 @@ const Home: React.FC = () => {
             <p className="text-xl text-gray-300 mb-8">
               Join thousands of students who have discovered their passion for music
             </p>
-            <Link href="/auth/signup">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-12 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-xl font-semibold hover:shadow-2xl transition-all duration-300 glow"
-              >
-                Get Started Now
-              </motion.button>
-            </Link>
+            <SignedIn>
+              <Link href="/dashboard">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-12 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-xl font-semibold hover:shadow-2xl transition-all duration-300 glow"
+                >
+                  Get Started Now
+                </motion.button>
+              </Link>
+            </SignedIn>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-12 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-xl font-semibold hover:shadow-2xl transition-all duration-300 glow"
+                >
+                  Get Started Now
+                </motion.button>
+              </SignInButton>
+            </SignedOut>
           </motion.div>
         </div>
       </section>
 
-      {/* Simple Modal for now */}
-      {showFormModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg p-8 max-w-md mx-4">
-            <h2 className="text-2xl font-bold mb-4">Welcome to JayMusicAcademy!</h2>
-            <p className="text-gray-600 mb-6">Help us personalize your learning experience.</p>
-            <button
-              onClick={() => {
-                setShowFormModal(false);
-                setCompletedForm(true);
-              }}
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-            >
-              Get Started
-            </button>
-          </div>
-        </div>
-      )}
+<PersonalizationFormModal
+        isOpen={showFormModal}
+        onClose={() => setShowFormModal(false)}
+        userId={user?.id || ''}
+        defaultName={(user?.fullName || `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim()) || null}
+        defaultEmail={user?.primaryEmailAddress?.emailAddress ?? null}
+        onSubmitted={() => setCompletedForm(true)}
+      />
     </div>
   );
 };

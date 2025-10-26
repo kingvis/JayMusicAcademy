@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { SignedIn, SignedOut, SignInButton, useUser } from '@clerk/nextjs';
+import Link from 'next/link';
+import PersonalizationFormModal from '@/components/PersonalizationFormModal';
 import { Keyboard as PianoIcon, Star, Clock, Users, Award, Play, Download, BookOpen, Heart, Share2, Volume2, Pause } from 'lucide-react';
 
 const Piano: React.FC = () => {
+  const { user } = useUser();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
+  const [showFormModal, setShowFormModal] = useState(false);
 
   const features = [
     {
@@ -140,13 +145,28 @@ const Piano: React.FC = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg text-lg font-semibold hover:shadow-2xl transition-all duration-300 glow"
-              >
-                Start Learning Piano
-              </motion.button>
+              <SignedIn>
+                <Link href="/dashboard">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg text-lg font-semibold hover:shadow-2xl transition-all duration-300 glow"
+                  >
+                    Start Learning Piano
+                  </motion.button>
+                </Link>
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg text-lg font-semibold hover:shadow-2xl transition-all duration-300 glow"
+                  >
+                    Start Learning Piano
+                  </motion.button>
+                </SignInButton>
+              </SignedOut>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -464,16 +484,38 @@ const Piano: React.FC = () => {
             <p className="text-xl text-gray-300 mb-8">
               Join hundreds of students who have discovered their passion for piano
             </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-12 py-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg text-xl font-semibold hover:shadow-2xl transition-all duration-300 glow"
-            >
-              Start Learning Today
-            </motion.button>
+<SignedIn>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowFormModal(true)}
+                className="px-12 py-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg text-xl font-semibold hover:shadow-2xl transition-all duration-300 glow"
+              >
+                Start Learning Today
+              </motion.button>
+            </SignedIn>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-12 py-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg text-xl font-semibold hover:shadow-2xl transition-all duration-300 glow"
+                >
+                  Start Learning Today
+                </motion.button>
+              </SignInButton>
+            </SignedOut>
           </motion.div>
         </div>
       </section>
+      <PersonalizationFormModal
+        isOpen={showFormModal}
+        onClose={() => setShowFormModal(false)}
+        userId={user?.id || ''}
+        defaultName={(user?.fullName || `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim()) || null}
+        defaultEmail={user?.primaryEmailAddress?.emailAddress ?? null}
+        onSubmitted={() => {}}
+      />
     </div>
   );
 };

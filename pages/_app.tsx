@@ -1,5 +1,12 @@
 import type { AppProps } from 'next/app';
-import { ClerkProvider } from '@clerk/nextjs';
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs';
 import dynamic from 'next/dynamic';
 const ParticleBackground = dynamic(() => import('../components/ParticleBackground'), { ssr: false });
 import '../styles/globals.css';
@@ -10,8 +17,15 @@ export default function App({
   Component, 
   pageProps 
 }: AppProps) {
+  const publishableKey = (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.CLERK_PUBLISHABLE_KEY || '').trim();
   return (
-    <ClerkProvider>
+    <ClerkProvider 
+      publishableKey={publishableKey} 
+      signInUrl="/sign-in" 
+      signUpUrl="/sign-up"
+      afterSignInUrl="/dashboard"
+      afterSignUpUrl="/dashboard"
+    >
       <ThemeProvider>
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-zinc-100 dark:from-slate-900 dark:via-purple-900 dark:to-slate-900">
           <ParticleBackground />
