@@ -3,6 +3,8 @@ import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { AuroraBackground } from '@/components/ui/aurora-background';
+import { GlareCard } from '@/components/ui/glare-card';
+import { Keyboard, Mic, Drumstick, Music, Zap, Wind, Volume2 } from 'lucide-react';
 
 const Home: React.FC = () => {
   const { data: session, status } = useSession();
@@ -10,13 +12,62 @@ const Home: React.FC = () => {
   const [completedForm, setCompletedForm] = React.useState(false);
 
   const instruments = [
-    { name: 'Keyboards', href: '/keyboards', color: 'from-blue-500 to-cyan-500' },
-    { name: 'Piano', href: '/piano', color: 'from-purple-500 to-pink-500' },
-    { name: 'Vocals', href: '/vocals', color: 'from-green-500 to-emerald-500' },
-    { name: 'Drums', href: '/drums', color: 'from-orange-500 to-red-500' },
-    { name: 'Bharatnatyam', href: '/bharatnatyam', color: 'from-indigo-500 to-purple-500' },
-    { name: 'Flute', href: '/flute', color: 'from-teal-500 to-blue-500' },
-    { name: 'Trumpet', href: '/trumpet', color: 'from-yellow-500 to-orange-500' },
+    { 
+      name: 'Keyboards', 
+      href: '/keyboards', 
+      color: 'from-blue-500 to-cyan-500',
+      icon: Keyboard,
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1000&auto=format&fit=crop',
+      description: 'Master digital keyboards and synthesizers with cutting-edge techniques'
+    },
+    { 
+      name: 'Piano', 
+      href: '/piano', 
+      color: 'from-purple-500 to-pink-500',
+      icon: Keyboard,
+      image: 'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=1000&auto=format&fit=crop',
+      description: 'Learn classical and contemporary piano from expert instructors'
+    },
+    { 
+      name: 'Vocals', 
+      href: '/vocals', 
+      color: 'from-green-500 to-emerald-500',
+      icon: Mic,
+      image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1000&auto=format&fit=crop',
+      description: 'Develop your voice with professional vocal training techniques'
+    },
+    { 
+      name: 'Drums', 
+      href: '/drums', 
+      color: 'from-orange-500 to-red-500',
+      icon: Drumstick,
+      image: 'https://images.unsplash.com/photo-1571327073757-71d13c24de30?q=80&w=1000&auto=format&fit=crop',
+      description: 'Master rhythm and percussion with dynamic drum lessons'
+    },
+    { 
+      name: 'Bharatnatyam', 
+      href: '/bharatnatyam', 
+      color: 'from-indigo-500 to-purple-500',
+      icon: Music,
+      image: 'https://images.unsplash.com/photo-1594736797933-d0ac20a9f1a4?q=80&w=1000&auto=format&fit=crop',
+      description: 'Learn the classical Indian dance form with traditional techniques'
+    },
+    { 
+      name: 'Flute', 
+      href: '/flute', 
+      color: 'from-teal-500 to-blue-500',
+      icon: Wind,
+      image: 'https://images.unsplash.com/photo-1465821185615-20b3c2fbf41b?q=80&w=1000&auto=format&fit=crop',
+      description: 'Discover the melodic beauty of woodwind instruments'
+    },
+    { 
+      name: 'Trumpet', 
+      href: '/trumpet', 
+      color: 'from-yellow-500 to-orange-500',
+      icon: Volume2,
+      image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1000&auto=format&fit=crop',
+      description: 'Learn brass instruments with professional techniques and theory'
+    },
   ];
 
   const stats = [
@@ -113,37 +164,48 @@ const Home: React.FC = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {instruments.map((instrument, index) => (
-              <motion.div
-                key={instrument.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-                className="group"
-              >
-                <Link href={instrument.href}>
-                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 card-3d">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${instrument.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
-                    
-                    <div className="relative p-8 text-center">
-                      <div className={`inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br ${instrument.color} rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                        <span className="text-4xl">🎹</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            {instruments.map((instrument, index) => {
+              const IconComponent = instrument.icon;
+              return (
+                <motion.div
+                  key={instrument.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group"
+                >
+                  <Link href={instrument.href}>
+                    <GlareCard className="flex flex-col items-center justify-center relative overflow-hidden">
+                      {/* Background Image */}
+                      <img
+                        className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity duration-500"
+                        src={instrument.image}
+                        alt={instrument.name}
+                      />
+                      
+                      {/* Gradient Overlay */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${instrument.color} opacity-20 group-hover:opacity-40 transition-opacity duration-300`} />
+                      
+                      {/* Content */}
+                      <div className="relative z-10 p-8 text-center">
+                        <div className={`inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br ${instrument.color} rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300 shadow-2xl`}>
+                          <IconComponent className="w-10 h-10 text-white" />
+                        </div>
+                        
+                        <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 transition-all duration-300">
+                          {instrument.name}
+                        </h3>
+                        
+                        <p className="text-gray-300 group-hover:text-white transition-colors duration-300 text-sm leading-relaxed">
+                          {instrument.description}
+                        </p>
                       </div>
-                      
-                      <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 transition-all duration-300">
-                        {instrument.name}
-                      </h3>
-                      
-                      <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
-                        Master the art of {instrument.name.toLowerCase()} with our expert instructors
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
+                    </GlareCard>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>

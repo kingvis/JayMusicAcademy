@@ -15,15 +15,14 @@ export default function ThemeToggle() {
     <button
       type="button"
       aria-label="Toggle theme"
-      className="inline-flex items-center gap-2 px-2 py-1.5 rounded-md border border-black/10 dark:border-white/10 text-sm hover:bg-black/5 dark:hover:bg-white/10"
+      className="h-8 w-8 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/10 text-neutral-700 dark:text-neutral-200"
       onClick={() => setTheme(isDark ? "light" : "dark")}
     >
       {isDark ? (
-        <Sun className="h-4 w-4" />
-      ) : (
         <Moon className="h-4 w-4" />
+      ) : (
+        <Sun className="h-4 w-4" />
       )}
-      <span className="hidden sm:inline">{isDark ? "Light" : "Dark"}</span>
     </button>
   );
 }

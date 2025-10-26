@@ -220,14 +220,15 @@ const Navbar: React.FC = () => {
             ) : (
               <div className="flex items-center space-x-3">
                 <ThemeToggle />
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => signIn()}
-                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-200 glow"
-                >
-                  Sign In
-                </motion.button>
+                <Link href="/auth">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-200 glow"
+                  >
+                    Sign In
+                  </motion.button>
+                </Link>
                 <Link href="/auth/signup">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -320,16 +321,15 @@ const Navbar: React.FC = () => {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <motion.button
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => {
-                        signIn();
-                        setIsOpen(false);
-                      }}
-                      className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-200"
-                    >
-                      Sign In
-                    </motion.button>
+                    <Link href="/auth">
+                      <motion.button
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setIsOpen(false)}
+                        className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-200"
+                      >
+                        Sign In
+                      </motion.button>
+                    </Link>
                     <Link href="/auth/signup">
                       <motion.button
                         whileTap={{ scale: 0.95 }}
