@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { AuroraBackground } from '@/components/ui/aurora-background';
 import { GlareCard } from '@/components/ui/glare-card';
-import { Keyboard, Mic, Drumstick, Music, Zap, Wind, Volume2 } from 'lucide-react';
+import { InfiniteSlider } from '@/components/ui/infinite-slider';
+import { Keyboard, Mic, Drumstick, Music, Zap, Wind, Volume2, Users, Star, Clock, Shield, Award, Heart, Headphones, BookOpen, Trophy, Target, Sparkles } from 'lucide-react';
 
 const Home: React.FC = () => {
   const { data: session, status } = useSession();
@@ -71,10 +72,22 @@ const Home: React.FC = () => {
   ];
 
   const stats = [
-    { value: '1000+', label: 'Students' },
-    { value: '50+', label: 'Instructors' },
-    { value: '4.9/5', label: 'Rating' },
-    { value: '24/7', label: 'Support' },
+    { value: '1000+', label: 'Students', icon: Users, color: 'from-blue-500 to-cyan-500' },
+    { value: '50+', label: 'Instructors', icon: BookOpen, color: 'from-purple-500 to-pink-500' },
+    { value: '4.9/5', label: 'Rating', icon: Star, color: 'from-yellow-500 to-orange-500' },
+    { value: '24/7', label: 'Support', icon: Shield, color: 'from-green-500 to-emerald-500' },
+  ];
+
+  // Extended stats for infinite slider
+  const extendedStats = [
+    { value: '1000+', label: 'Students', icon: Users, color: 'from-blue-500 to-cyan-500' },
+    { value: '50+', label: 'Instructors', icon: BookOpen, color: 'from-purple-500 to-pink-500' },
+    { value: '4.9/5', label: 'Rating', icon: Star, color: 'from-yellow-500 to-orange-500' },
+    { value: '24/7', label: 'Support', icon: Shield, color: 'from-green-500 to-emerald-500' },
+    { value: '95%', label: 'Success Rate', icon: Trophy, color: 'from-indigo-500 to-purple-500' },
+    { value: '500+', label: 'Graduates', icon: Award, color: 'from-pink-500 to-rose-500' },
+    { value: '10+', label: 'Years Experience', icon: Clock, color: 'from-teal-500 to-blue-500' },
+    { value: '100%', label: 'Satisfaction', icon: Heart, color: 'from-red-500 to-pink-500' },
   ];
 
   useEffect(() => {
@@ -125,26 +138,50 @@ const Home: React.FC = () => {
         </div>
       </AuroraBackground>
 
-      {/* Stats Section */}
+      {/* Achievements Section */}
       <section className="py-20 bg-black/40 dark:bg-black/20 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
-              >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4">
-                  <span className="text-2xl">📊</span>
-                </div>
-                <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
-                <div className="text-gray-400">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
+          {/* Infinite Slider with Extended Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="relative"
+          >
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-white mb-2">
+                Our <span className="gradient-text">Achievements</span>
+              </h3>
+              <p className="text-gray-400">Continuous excellence in music education</p>
+            </div>
+            
+            <InfiniteSlider
+              gap={32}
+              duration={30}
+              durationOnHover={80}
+              className="py-8"
+            >
+              {extendedStats.map((stat, index) => {
+                const IconComponent = stat.icon;
+                return (
+                  <div
+                    key={`${stat.label}-${index}`}
+                    className="flex flex-col items-center justify-center min-w-[240px] p-8 bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl hover:border-gray-600/50 transition-all duration-300 group hover:bg-gradient-to-br hover:from-gray-700/60 hover:to-gray-800/60"
+                  >
+                    <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${stat.color} rounded-xl mb-4 group-hover:scale-110 transition-all duration-300 shadow-lg`}>
+                      <IconComponent className="w-7 h-7 text-white" />
+                    </div>
+                    <div className="text-2xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 transition-all duration-300">
+                      {stat.value}
+                    </div>
+                    <div className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300 font-medium text-center">
+                      {stat.label}
+                    </div>
+                  </div>
+                );
+              })}
+            </InfiniteSlider>
+          </motion.div>
         </div>
       </section>
 

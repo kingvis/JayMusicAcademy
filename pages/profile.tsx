@@ -20,6 +20,8 @@ import {
   Target,
   TrendingUp
 } from 'lucide-react';
+import { SplineScene } from "@/components/ui/splite";
+import { Spotlight } from "@/components/ui/spotlight";
 
 const Profile: React.FC = () => {
   const { data: session } = useSession();
@@ -73,7 +75,30 @@ const Profile: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 p-8 mb-8"
         >
-          <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+          {/* 3D Robo integrated on the right side with hover tilt */}
+          <div className="absolute inset-y-0 right-0 w-[40%] hidden md:block group">
+            <Spotlight className="-top-20 right-10 opacity-100" fill="white" />
+            <motion.div
+              className="absolute inset-0 will-change-transform transform-gpu"
+              onMouseMove={(e) => {
+                const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                const px = (e.clientX - rect.left) / rect.width - 0.5;
+                const py = (e.clientY - rect.top) / rect.height - 0.5;
+                (e.currentTarget as HTMLElement).style.transform = `perspective(900px) rotateX(${py * -6}deg) rotateY(${px * 8}deg) scale(1.02)`;
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = '';
+              }}
+            >
+              <SplineScene 
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                className="w-full h-full"
+              />
+            </motion.div>
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-l from-transparent to-gray-900/60" />
+          </div>
+
+          <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
             {/* Profile Picture */}
             <div className="relative">
               <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-4xl font-bold">

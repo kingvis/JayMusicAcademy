@@ -21,6 +21,7 @@ import ThemeToggle from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
+import Footer from "@/components/ui/footer";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -158,6 +159,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </header>
         )}
         <main className={cn(isHome ? "p-0" : "p-4 md:p-8")}>{children}</main>
+        <Footer />
       </div>
     </div>
   );
