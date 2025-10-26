@@ -1,6 +1,6 @@
-import type { ClerkProviderOptions } from '@clerk/nextjs'
+import type { Appearance } from '@clerk/types'
 
-export const clerkConfig: ClerkProviderOptions = {
+export const clerkConfig: { appearance: Appearance } = {
   appearance: {
     elements: {
       formFieldInput: {
